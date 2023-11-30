@@ -1,0 +1,50 @@
+STACKSG SEGMENT PARA STACK
+	DB 64 DUP(?)
+STACKSG ENDS 
+DATASG  SEGMENT PARA 'DATA'
+ORIG    DB 'MCMohamedGawish'
+TEMP    DB 10 DUP(' ')
+DATASG  ENDS
+CODESG  SEGMENT PARA 'CODE'
+ASSUME  CS:CODESG,DS:DATASG,SS:STACKSG
+ENTRY   PROC FAR
+; 
+	PUSH DS
+	SUB  AX,AX
+	PUSH AX
+	MOV  AX,DATASG
+	MOV  DS,AX
+;
+	MOV  DX,10
+;	
+M1:
+	LEA  DI,ORIG
+	LEA  SI,TEMP
+	MOV  AL,[DI+2]
+	MOV  [SI+9],AL
+	MOV  CX,9
+M2:
+	MOV  AL,[DI+3]
+	MOV  [SI],AL
+	INC  DI
+	INC  SI
+	LOOP M2
+	MOV  CX,10
+;
+	LEA  DI,ORIG
+	LEA  SI,TEMP
+M3:
+	MOV  AL,[SI]
+	MOV  [DI+2], AL
+	INC  DI
+	INC  SI
+	LOOP M3
+	
+	DEC  DX
+	CMP  DX,00
+	JNE  M1
+	RET
+ENTRY   ENDP
+CODESG  ENDS
+        END ENTRY   																																																																																		
+ 	
